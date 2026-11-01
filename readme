@@ -1,0 +1,65 @@
+# DarkSpend.ai 🚀
+### Autonomous Procurement Compliance Agent Built on Google Gemini & PayPal Rails
+
+**DarkSpend.ai is an intelligent, email-driven procurement controller designed to eliminate corporate leakage and catch "Maverick Spend" (unauthorized dark spending) right at the point of intent.** 
+
+Instead of forcing employees to navigate complex procurement software apps or manually auditing expense exceptions after money leaves the company, employees simply pitch their purchase intents via standard text emails. The backend pipeline automatically extracts metrics, parses policy compliance vectors, and dynamically provisions official transactional tracking records.
+
+---
+
+## 🏗️ System Architecture
+
+```text
+    [ Messy Employee Email Text ]
+                 │
+                 ▼
+     [ Google Gemini 3.5 Engine ]
+    • Strips out metadata parameters
+    • Assesses structured policy rules
+                 │
+         ┌───────┴─────────────────┐
+         ▼                         ▼
+  [ Maverick Spend Risk ]   [ Authorized B2B Stream ]
+    • Blocks Flow             • Requests OAuth2 Token (`/v1/oauth2/token`)
+    • Logs Compliance Reason  • Mints Draft Tracking Invoices (`/v2/invoicing/invoices`)
+```
+
+### 1. The Generative AI Compliance Controller
+The application integrates the **Google Gemini framework (`gemini-3.5-flash-lite`)** to act as a zero-training operational intake window. By utilizing native `response_schema` extraction parameters linked to strict Pydantic blueprints, the AI processes unstructured human language input and converts it into explicit, deterministic JSON objects. It evaluates the message context against company policy parameters, identifying if an employee is requesting an authorized catalog asset or attempting a personal card reimbursement workaround.
+
+### 2. The PayPal Sandbox Financial Engine
+For every approved, compliant intake stream parsed by the AI, the application directly orchestrates programmatic B2B accounting infrastructure:
+* **Authentication Node:** Interfaced with `/v1/oauth2/token` to dynamically request scoped OAuth2 Bearer credentials from the sandbox gateway.
+* **Transaction Ingestion Node:** Communicates with the `/v2/invoicing/invoices` endpoint matrix to programmatically formulate draft corporate tracking invoices detailing the exact unit metrics, values, quantities, and vendor recipient parameters extracted by the model.
+* **Resiliency Fallback Matrix:** Includes programmatic network shims to gracefully process simulated local sandbox validation items if the public developer endpoints return network carrier maintenance blocks (`<!DOCTYPE html>`).
+
+---
+
+## 🛠️ Step-by-Step Local Deployment Guide
+
+### 1. Prerequisites & Environment Mapping
+Initialize your environment variables by creating a `.env` file in the project root folder:
+```env
+GEMINI_API_KEY=your_gemini_api_key
+PAYPAL_CLIENT_ID=your_paypal_sandbox_client_id
+PAYPAL_CLIENT_SECRET=your_paypal_sandbox_secret
+```
+
+### 2. Installation Setup
+Execute these commands in your Windows terminal window to provision the local runtime environment:
+```cmd
+# Create virtual environment directory
+python -m venv venv
+
+# Activate active framework shell paths
+venv\Scripts\activate
+
+# Install essential dependencies
+pip install requests pydantic google-genai python-dotenv
+```
+
+### 3. Executing the Proof-of-Concept Demo Test Suite
+To execute the live verification cases showing both an Authorized Purchase Order Flow and an Intercepted Maverick Spend Event, run:
+```cmd
+python run_demo.py
+```
